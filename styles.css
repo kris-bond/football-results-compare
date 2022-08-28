@@ -1,0 +1,49 @@
+* { 
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+#container {
+    width: 100vw;
+    height: 100vh;
+}
+
+header {
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin: 15px;
+}
+
+footer {
+    text-align: center;
+}
+
+/* left pane */
+
+.left-pane {
+    border: 1px solid rgb(0, 0, 0);
+    display: flex;
+    flex-grow: 1;
+    width: 50%;
+    height: 90vh;
+}
+
+/* right pane */
+
+.right-pane {
+    border: 1px solid rgb(0, 0, 0);
+    display: flex;
+    flex-grow: 1;
+    width: 50%;
+    height: 90vh;
+}
+
+/* table */
+
