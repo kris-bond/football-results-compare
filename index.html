@@ -15,16 +15,31 @@
         </header>
 
         <main>
-            <div class="left-pane">
-                <div class="table">
-                    
-                </div>
-            </div>
+            <div class="content">
 
-            <div class="right-pane">
-                <div class="table">
+                <div class="team-filter">
+                    <label for="cars">Select a team:</label>
 
+                    <select name="team" id="team">
+                        <option value="team1">team1</option>
+                        <option value="team2">team2</option>
+                        <option value="team3">team3</option>
+                    </select>
                 </div>
+
+                <table id="table">
+                    <tr>
+                        <th rowspan="2">Team Played</th>
+                        <th colspan="2">Year</th>
+                        <th rowspan="2">Difference</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="1">Year One</th>
+                        <th rowspan="1">Year Two</th>
+                    </tr>
+
+                </table>
+
             </div>
         </main>
 
