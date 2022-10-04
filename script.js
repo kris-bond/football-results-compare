@@ -797,6 +797,8 @@ const results22to23 =
 
 const selectTeam = document.getElementById("team");
 
+const table = document.getElementById("table").getElementsByTagName('tbody')[0];
+
 for(let i = 0; i < teams.length; i++) {
 
     let obj = teams[i];
@@ -806,9 +808,54 @@ for(let i = 0; i < teams.length; i++) {
     teamOption.value = obj.name;
     selectTeam.appendChild(teamOption);
 
-    //console.log(obj.name);
 }
 
-//console.log(teams);
+//get current selected team and update
+selectTeam.addEventListener("change", function() {
+    calculate(selectTeam.value);
+})
 
-//const obj = JSON.parse(teams);
+//calculate row by row - team played, season 1, season 2, difference
+function calculate(team){
+    console.log(team);
+
+    for(let i = 0; i < results22to23.length; i++) {
+
+        let results = results22to23[i];
+
+        //TODO change this to map
+
+        let matches = results.match;
+
+        if(matches.includes(team)){
+
+            let row = table.insertRow();
+
+            let teamPlayed = row.insertCell(0);
+            let seasonOne = row.insertCell(1);
+            let seasonTwo = row.insertCell(2);
+            let difference = row.insertCell(3);
+
+            teamPlayed.innerHTML = results.match;
+            seasonOne.innerHTML = 'N/A';
+            seasonTwo.innerHTML = results.result;
+            difference.innerHTML = 'N/A';
+
+            //TODO change the team played to have only opposition name with (H) or (A)
+            //TODO add in previous season to this view also
+            //TODO calculate difference between seasons
+
+        }
+
+    }
+}
+
+//TODO change the fomratting of the CSS - remove the box and change it to be on the table instead
+
+//colour in row based on difference
+
+//add a table footer that has the sum of difference
+
+//clean up code
+
+//sort out data api
