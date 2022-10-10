@@ -414,7 +414,7 @@ const results21to22 =
 const results22to23 = 
 [
     {"match":"Arsenal_Aston Villa", "result":"2–1"},
-    {"match":"Arsenal_Bournemouth ="},
+    {"match":"Arsenal_Bournemouth", "result":""},
     {"match":"Arsenal_Brentford", "result":""},
     {"match":"Arsenal_Brighton & Hove Albion", "result":""},
     {"match":"Arsenal_Chelsea", "result":""},
@@ -556,7 +556,7 @@ const results22to23 =
     {"match":"Everton_Fulham", "result":""},
     {"match":"Everton_Leeds United", "result":""},
     {"match":"Everton_Leicester City", "result":""},
-    {"match":"Everton_Liverpool", "result":"[[Merseyside derby|0–0]]"},
+    {"match":"Everton_Liverpool", "result":"0–0"},
     {"match":"Everton_Manchester City", "result":""},
     {"match":"Everton_Manchester United", "result":""},
     {"match":"Everton_Newcastle United", "result":""},
@@ -568,7 +568,7 @@ const results22to23 =
     {"match":"Fulham_Arsenal", "result":""},
     {"match":"Fulham_Aston Villa", "result":""},
     {"match":"Fulham_Bournemouth", "result":""},
-    {"match":"Fulham_Brentford", "result":"[[West London derby|3–2]]"},
+    {"match":"Fulham_Brentford", "result":"3–2"},
     {"match":"Fulham_Brighton & Hove Albion", "result":"2–1"},
     {"match":"Fulham_Chelsea", "result":""},
     {"match":"Fulham_Crystal Palace", "result":""},
@@ -797,7 +797,9 @@ const results22to23 =
 
 const selectTeam = document.getElementById("team");
 
-const table = document.getElementById("table").getElementsByTagName('tbody')[0];
+const table = document.getElementById("table");
+
+const tableBody = document.getElementById("table").getElementsByTagName('tbody')[0];
 
 for(let i = 0; i < teams.length; i++) {
 
@@ -812,50 +814,83 @@ for(let i = 0; i < teams.length; i++) {
 
 //get current selected team and update
 selectTeam.addEventListener("change", function() {
+    clear();
     calculate(selectTeam.value);
 })
 
+//clears table
+function clear(){
+
+    //clears table up until the header
+    let rowCount = table.rows.length; 
+    while(--rowCount - 1) table.deleteRow(rowCount);
+
+}
+
 //calculate row by row - team played, season 1, season 2, difference
 function calculate(team){
-    console.log(team);
 
+    let sOne
+    let sTwo
+
+    //TODO change this looping to generic code to be reused
+    //TODO make use of map function
+    //TODO change the team played to have only opposition name with (H) or (A)
+    //TODO add in previous season to this view also
+    //TODO calculate difference between seasons
+
+    //looping over season one data
+    for(let i = 0; i < results21to22.length; i++) {
+
+        sOne = results21to22[i];
+
+        // let matches = sOne.match;
+
+        // if(matches.includes(team)){
+
+        //     let row = tableBody.insertRow();
+
+        //     let teamPlayed = row.insertCell(0);
+        //     let seasonOne = row.insertCell(1);
+        //     let seasonTwo = row.insertCell(2);
+        //     let difference = row.insertCell(3);
+
+        //     teamPlayed.innerHTML = sOne.match;
+        //     seasonOne.innerHTML = 'N/A';
+        //     seasonTwo.innerHTML = sOne.result;
+        //     difference.innerHTML = 'N/A';
+
+        // }
+    }
+
+    //looping over sesaon two data
     for(let i = 0; i < results22to23.length; i++) {
 
-        let results = results22to23[i];
+        sTwo = results22to23[i];
 
-        //TODO change this to map
-
-        let matches = results.match;
+        let matches = sTwo.match;
 
         if(matches.includes(team)){
 
-            let row = table.insertRow();
+            let row = tableBody.insertRow();
 
             let teamPlayed = row.insertCell(0);
             let seasonOne = row.insertCell(1);
             let seasonTwo = row.insertCell(2);
             let difference = row.insertCell(3);
 
-            teamPlayed.innerHTML = results.match;
+            teamPlayed.innerHTML = sTwo.match;
             seasonOne.innerHTML = 'N/A';
-            seasonTwo.innerHTML = results.result;
+            seasonTwo.innerHTML = sTwo.result;
             difference.innerHTML = 'N/A';
 
-            //TODO change the team played to have only opposition name with (H) or (A)
-            //TODO add in previous season to this view also
-            //TODO calculate difference between seasons
-
         }
-
     }
 }
 
-//TODO change the fomratting of the CSS - remove the box and change it to be on the table instead
 
+//TODO:
 //colour in row based on difference
-
 //add a table footer that has the sum of difference
-
 //clean up code
-
 //sort out data api
