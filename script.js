@@ -835,7 +835,7 @@ function calculate(team){
 
     //TODO change this looping to generic code to be reused
     //TODO make use of map function
-    //TODO change the team played to have only opposition name with (H) or (A)
+    //TODO get both seasons into same rows
     //TODO add in previous season to this view also
     //TODO calculate difference between seasons
 
@@ -844,23 +844,25 @@ function calculate(team){
 
         sOne = results21to22[i];
 
-        // let matches = sOne.match;
+        let matches = sOne.match;
 
-        // if(matches.includes(team)){
+        if(matches.includes(team)){
 
-        //     let row = tableBody.insertRow();
+            let formattedTeam = formatTeam(team, matches);
 
-        //     let teamPlayed = row.insertCell(0);
-        //     let seasonOne = row.insertCell(1);
-        //     let seasonTwo = row.insertCell(2);
-        //     let difference = row.insertCell(3);
+            let row = tableBody.insertRow();
 
-        //     teamPlayed.innerHTML = sOne.match;
-        //     seasonOne.innerHTML = 'N/A';
-        //     seasonTwo.innerHTML = sOne.result;
-        //     difference.innerHTML = 'N/A';
+            let teamPlayed = row.insertCell(0);
+            let seasonOne = row.insertCell(1);
+            let seasonTwo = row.insertCell(2);
+            let difference = row.insertCell(3);
 
-        // }
+            teamPlayed.innerHTML = formattedTeam;
+            seasonOne.innerHTML = sOne.result;
+            //seasonTwo.innerHTML = sOne.result;
+            difference.innerHTML = 'N/A';
+
+        }
     }
 
     //looping over sesaon two data
@@ -872,6 +874,8 @@ function calculate(team){
 
         if(matches.includes(team)){
 
+            let formattedTeam = formatTeam(team, matches);
+
             let row = tableBody.insertRow();
 
             let teamPlayed = row.insertCell(0);
@@ -879,13 +883,28 @@ function calculate(team){
             let seasonTwo = row.insertCell(2);
             let difference = row.insertCell(3);
 
-            teamPlayed.innerHTML = sTwo.match;
-            seasonOne.innerHTML = 'N/A';
+            teamPlayed.innerHTML = formattedTeam;
+            //seasonOne.innerHTML = 'N/A';
             seasonTwo.innerHTML = sTwo.result;
             difference.innerHTML = 'N/A';
 
         }
     }
+}
+
+function formatTeam(team, match) {
+
+    let formattedTeam = ""
+
+    let splitTeam = match.split("_");
+    if(splitTeam[0] == team){
+        formattedTeam = splitTeam[1] + " (H)";
+    } else {
+        formattedTeam = splitTeam[0] + " (A)";
+    }
+
+    return formattedTeam;
+
 }
 
 
