@@ -833,11 +833,15 @@ function calculate(team){
     let sOne
     let sTwo
 
+    //keeps track of teams with no matches
+    let unmatchedTeams = [];
+
     //TODO change this looping to generic code to be reused
     //TODO make use of map function
     //TODO get both seasons into same rows
     //TODO add in previous season to this view also
     //TODO calculate difference between seasons
+    //TODO mix relegated/ promoted teams between seasons
 
     //looping over season one data
     for(let i = 0; i < results21to22.length; i++) {
@@ -860,7 +864,7 @@ function calculate(team){
             teamPlayed.innerHTML = formattedTeam;
             seasonOne.innerHTML = sOne.result;
             //seasonTwo.innerHTML = sOne.result;
-            difference.innerHTML = 'N/A';
+            // difference.innerHTML = 'N/A';
 
         }
     }
@@ -876,22 +880,17 @@ function calculate(team){
 
             let formattedTeam = formatTeam(team, matches);
 
-            let row = tableBody.insertRow();
-
-            let teamPlayed = row.insertCell(0);
-            let seasonOne = row.insertCell(1);
-            let seasonTwo = row.insertCell(2);
-            let difference = row.insertCell(3);
-
-            teamPlayed.innerHTML = formattedTeam;
-            //seasonOne.innerHTML = 'N/A';
-            seasonTwo.innerHTML = sTwo.result;
-            difference.innerHTML = 'N/A';
+            //check if team already in table
+            matchTeams(formattedTeam, sTwo, unmatchedTeams);
 
         }
     }
+
+    console.log(unmatchedTeams);
+
 }
 
+//Formats the team played name for table
 function formatTeam(team, match) {
 
     let formattedTeam = ""
@@ -907,9 +906,55 @@ function formatTeam(team, match) {
 
 }
 
+//Matches up teams already in table
+function matchTeams(formattedTeam, season, unmatchedTeams){
+
+    //flag to check if team has a match
+    hasMatch = false;
+
+    //loop through rows
+    for (var i = 0, row; row = table.rows[i]; i++) {
+        
+        if(row.cells[0].innerText == formattedTeam){
+
+            row.cells[2].innerHTML = season.result;
+
+            hasMatch = true;
+
+        }
+
+     }
+
+     if(!hasMatch) {
+
+        //updating array with outliers
+        unmatchedTeams.push(season);
+
+     }
+
+     //populate table for the teams with season 2 data only
+     if(unmatchedTeams.length > 6) {
+
+        let row = tableBody.insertRow();
+
+        let teamPlayed = row.insertCell(0);
+        let seasonOne = row.insertCell(1);
+        let seasonTwo = row.insertCell(2);
+        let difference = row.insertCell(3);
+
+        teamPlayed.innerHTML = formattedTeam;
+        seasonOne.innerHTML = 'N/A';
+        seasonTwo.innerHTML = season.result;
+        difference.innerHTML = 'N/A';
+
+     }
+
+}
+
 
 //TODO:
 //colour in row based on difference
 //add a table footer that has the sum of difference
 //clean up code
 //sort out data api
+//make more adaptive for more seasons
