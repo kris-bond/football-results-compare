@@ -836,11 +836,6 @@ function calculate(team){
     //keeps track of teams with no matches
     let unmatchedTeams = [];
 
-    //TODO change this looping to generic code to be reused
-    //TODO make use of map function
-    //TODO calculate difference between seasons
-    //TODO mix relegated/ promoted teams between seasons
-
     //looping over season one data
     for(let i = 0; i < results21to22.length; i++) {
 
@@ -883,6 +878,8 @@ function calculate(team){
 
         }
     }
+
+    differenceTotal();
 
     console.log(unmatchedTeams);
 
@@ -981,9 +978,9 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
                         difference = 0;
                     }
                     
-                    row.cells[3].innerHTML = difference
+                    row.cells[3].innerHTML = difference;
                 } else {
-                    row.cells[3].innerHTML = "-"
+                    row.cells[3].innerHTML = "-";
                 }
 
             }
@@ -1018,10 +1015,34 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
 
 }
 
+//calculates cumulative difference
+function differenceTotal(){
+
+    total = 0;
+
+    //loop through rows
+    for (var i = 2, row; row = table.rows[i]; i++) {
+
+        if(row.cells[3].innerText != '-'){
+            total += Number(row.cells[3].innerText);
+        }
+    }
+
+    let footerRow = tableBody.insertRow();
+    footerTitle = footerRow.insertCell(0);
+    footerTitle.setAttribute("colspan", "3");
+    footerTitle.innerText = "Total";
+    footerTitle.style.fontWeight = "bold";
+    let totalCell = footerRow.insertCell(1);
+    totalCell.innerText = total;
+
+}
+
 
 //TODO:
+//mix relegated/ promoted teams between seasons
 //colour in row based on difference
-//add a table footer that has the sum of difference
-//clean up code
+//Make code generic code to be reused/ clean up code
+//make use of map function
 //sort out data api
 //make more adaptive for more seasons
