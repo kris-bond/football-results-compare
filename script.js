@@ -838,8 +838,6 @@ function calculate(team){
 
     //TODO change this looping to generic code to be reused
     //TODO make use of map function
-    //TODO get both seasons into same rows
-    //TODO add in previous season to this view also
     //TODO calculate difference between seasons
     //TODO mix relegated/ promoted teams between seasons
 
@@ -912,6 +910,8 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
     //flag to check if team has a match
     hasMatch = false;
 
+    let difference;
+
     //loop through rows
     for (var i = 0, row; row = table.rows[i]; i++) {
         
@@ -921,19 +921,86 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
 
             hasMatch = true;
 
+            //get home or away
+            let home = true;
+            if(row.cells[0].innerText.includes('(A)')){
+                home = false;
+            }
+
+            let rOne = row.cells[1].innerText.split('–');
+            let rTwo = row.cells[2].innerText.split('–');
+
+            // check if matching game
+            if(row.cells[0].innerText.includes(formattedTeam)) {
+
+                if(!row.cells[2].innerText == ""){
+
+                    let seasonOneResult = 0;
+                    let seasonTwoResult = 0;
+
+                    if(home){
+                        if(Number(rOne[0]) > Number(rOne[1])){
+                            seasonOneResult = 3;
+                        } else if (Number(rOne[0]) == Number(rOne[1])) {
+                            seasonOneResult = 1;
+                        } else {
+                            seasonOneResult = 0;
+                        }
+
+                        if(Number(rTwo[0]) > Number(rTwo[1])){
+                            seasonTwoResult = 3;
+                        } else if (Number(rTwo[0]) == Number(rTwo[1])) {
+                            seasonTwoResult = 1;
+                        } else {
+                            seasonTwoResult = 0;
+                        }
+
+                    } else{
+                        if(Number(rOne[0]) > Number(rOne[1])){
+                            seasonOneResult = 0;
+                        } else if (Number(rOne[0]) == Number(rOne[1])) {
+                            seasonOneResult = 1;
+                        } else {
+                            seasonOneResult = 3;
+                        }
+
+                        if(Number(rTwo[0]) > Number(rTwo[1])){
+                            seasonTwoResult = 0;
+                        } else if (Number(rTwo[0]) == Number(rTwo[1])) {
+                            seasonTwoResult = 1;
+                        } else {
+                            seasonTwoResult = 3;
+                        }
+                    }
+
+                    if(seasonTwoResult > seasonOneResult) {
+                        difference = seasonTwoResult - seasonOneResult;
+                    } else if(seasonTwoResult < seasonOneResult) {
+                        difference = seasonTwoResult - seasonOneResult;
+                    } else {
+                        difference = 0;
+                    }
+                    
+                    row.cells[3].innerHTML = difference
+                } else {
+                    row.cells[3].innerHTML = "-"
+                }
+
+            }
+
         }
 
-     }
+    }
 
-     if(!hasMatch) {
+    if(!hasMatch) {
 
         //updating array with outliers
         unmatchedTeams.push(season);
 
-     }
+    }
 
-     //populate table for the teams with season 2 data only
-     if(unmatchedTeams.length > 6) {
+    //populate table for the teams with season 2 data only
+    if(unmatchedTeams.length > 6) {
 
         let row = tableBody.insertRow();
 
@@ -947,7 +1014,7 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
         seasonTwo.innerHTML = season.result;
         difference.innerHTML = 'N/A';
 
-     }
+    }
 
 }
 
