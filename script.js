@@ -1025,9 +1025,19 @@ function differenceTotal(){
 
         if(row.cells[3].innerText != '-'){
             total += Number(row.cells[3].innerText);
+
+            //formatting cells
+            if(Number(row.cells[3].innerText) > 0){
+                row.cells[3].style.backgroundColor = "lightgreen";
+            } else if(Number(row.cells[3].innerText) === 0){
+                row.cells[3].style.backgroundColor = "lightyellow";
+            } else {
+                row.cells[3].style.backgroundColor = "indianred";
+            }
         }
     }
 
+    //creating total footer
     let footerRow = tableBody.insertRow();
     footerTitle = footerRow.insertCell(0);
     footerTitle.setAttribute("colspan", "3");
@@ -1036,13 +1046,21 @@ function differenceTotal(){
     let totalCell = footerRow.insertCell(1);
     totalCell.innerText = total;
 
+    //formatting cell
+    if(Number(totalCell.innerText) > 0){
+        totalCell.style.backgroundColor = "lightgreen";
+    } else if(Number(totalCell.innerText) === 0){
+        totalCell.style.backgroundColor = "lightyellow";
+    } else {
+        totalCell.style.backgroundColor = "indianred";
+    }
+
 }
 
 
 //TODO:
 //mix relegated/ promoted teams between seasons
-//colour in row based on difference
+//sort out data api
 //Make code generic code to be reused/ clean up code
 //make use of map function
-//sort out data api
 //make more adaptive for more seasons
