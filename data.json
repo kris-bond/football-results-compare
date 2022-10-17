@@ -384,7 +384,7 @@
 
 "2022/23":[
     {"match":"Arsenal_Aston Villa", "result":"2–1"},
-    {"match":"Arsenal_Bournemouth ="},
+    {"match":"Arsenal_Bournemouth =", "result":""},
     {"match":"Arsenal_Brentford", "result":""},
     {"match":"Arsenal_Brighton & Hove Albion", "result":""},
     {"match":"Arsenal_Chelsea", "result":""},

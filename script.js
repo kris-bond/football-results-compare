@@ -997,7 +997,6 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
 
     }
 
-    //TODO: remove this?
     //populate table for the teams with season 2 data only
     if(unmatchedTeams.length > 6) {
 
@@ -1039,28 +1038,31 @@ function updateOutliers(unmatchedTeams, team){
 
     combinedNames = [];
     capturedName = [];
+
+    sOneUniq = [];
+    sTwoUniq = [];
+
     for(let i = 0; i < seasonOneOnly.length; i++) {
 
-        if(!capturedName.includes(seasonOneOnly[i].slice(0, -4))) {
-            capturedName.push(seasonOneOnly[i].slice(0, -4));
+        if(!sOneUniq.includes(seasonOneOnly[i].slice(0, -4))) {
+            // capturedName.push(seasonOneOnly[i].slice(0, -4));
+            sOneUniq.push(seasonOneOnly[i].slice(0, -4));
 
-            for(let i = 0; i < sTwoUnmatchedNames.length; i++){
-                if(!capturedName.includes(sTwoUnmatchedNames[i].slice(0, -4))) {
-                    capturedName.push(sTwoUnmatchedNames[i].slice(0, -4));
-                    combinedNames.push(seasonOneOnly[i].slice(0, -4) + '/' + sTwoUnmatchedNames[i].slice(0, -4));
-                }
-            }
+        }
+
+    }
+
+    for(let i = 0; i < sTwoUnmatchedNames.length; i++){
+        if(!sTwoUniq.includes(sTwoUnmatchedNames[i].slice(0, -4))) {
+            // capturedName.push(sTwoUnmatchedNames[i].slice(0, -4));
+            sTwoUniq.push(sTwoUnmatchedNames[i].slice(0, -4));
+            // combinedNames.push(seasonOneOnly[i].slice(0, -4) + '/' + sTwoUnmatchedNames[i].slice(0, -4));
         }
     }
 
-    console.log(capturedName);
-
-    console.log(combinedNames);
-    console.log(seasonOneOnly);
-    // console.log(seasonTwoOnly);
-    console.log(sTwoUnmatchedNames);
-
-    // console.log(combinedNames[0].slice(0, "/").slice(0, -4));
+    for(let i = 0; i < sOneUniq.length; i++) {
+        combinedNames.push(sOneUniq[i] + '/' + sTwoUniq[i]);
+    }
 
     //update table
     for (var i = 2, row; row = table.rows[i]; i++) {
@@ -1078,7 +1080,7 @@ function updateOutliers(unmatchedTeams, team){
 
                     for(let i = 0; i < seasonTwoOnly.length; i++) {
 
-                        if(seasonTwoOnly[i].match.split("_")[0] == splitNames[1]){
+                        if(seasonTwoOnly[i].match.split("_")[1] == splitNames[1]){
                             row.cells[2].innerText = seasonTwoOnly[i].result
                         }
                         
@@ -1089,12 +1091,67 @@ function updateOutliers(unmatchedTeams, team){
 
                     for(let i = 0; i < seasonTwoOnly.length; i++) {
 
-                        if(seasonTwoOnly[i].match.split("_")[1] == splitNames[1]){
+                        if(seasonTwoOnly[i].match.split("_")[0] == splitNames[1]){
                             row.cells[2].innerText = seasonTwoOnly[i].result
                         }
                         
                     }
-                } 
+                }
+
+                if(!row.cells[2].innerText == "") {
+
+                    let rOne = row.cells[1].innerText.split('–');
+                    let rTwo = row.cells[2].innerText.split('–');
+                    
+                    let seasonOneResult = 0;
+                    let seasonTwoResult = 0;
+
+                    if(isHome){
+                        if(Number(rOne[0]) > Number(rOne[1])){
+                            seasonOneResult = 3;
+                        } else if (Number(rOne[0]) == Number(rOne[1])) {
+                            seasonOneResult = 1;
+                        } else {
+                            seasonOneResult = 0;
+                        }
+
+                        if(Number(rTwo[0]) > Number(rTwo[1])){
+                            seasonTwoResult = 3;
+                        } else if (Number(rTwo[0]) == Number(rTwo[1])) {
+                            seasonTwoResult = 1;
+                        } else {
+                            seasonTwoResult = 0;
+                        }
+
+                    } else{
+                        if(Number(rOne[0]) > Number(rOne[1])){
+                            seasonOneResult = 0;
+                        } else if (Number(rOne[0]) == Number(rOne[1])) {
+                            seasonOneResult = 1;
+                        } else {
+                            seasonOneResult = 3;
+                        }
+
+                        if(Number(rTwo[0]) > Number(rTwo[1])){
+                            seasonTwoResult = 0;
+                        } else if (Number(rTwo[0]) == Number(rTwo[1])) {
+                            seasonTwoResult = 1;
+                        } else {
+                            seasonTwoResult = 3;
+                        }
+                    }
+
+                    if(seasonTwoResult > seasonOneResult) {
+                        difference = seasonTwoResult - seasonOneResult;
+                    } else if(seasonTwoResult < seasonOneResult) {
+                        difference = seasonTwoResult - seasonOneResult;
+                    } else {
+                        difference = 0;
+                    }
+
+                    row.cells[3].innerHTML = difference;
+
+                }
 
             }
         }
@@ -1110,6 +1167,11 @@ function differenceTotal(){
 
     //loop through rows
     for (var i = 2, row; row = table.rows[i]; i++) {
+
+        //adding '-' to rows where mismatched teams have no 2nd season result
+        if(row.cells[3].innerText == ''){
+            row.cells[3].innerText = '-';
+        }
 
         if(row.cells[3].innerText != '-'){
             total += Number(row.cells[3].innerText);
@@ -1147,7 +1209,6 @@ function differenceTotal(){
 
 
 //TODO:
-//mix relegated/ promoted teams between seasons
 //sort out data api
 //Make code generic code to be reused/ clean up code
 //make use of map function
