@@ -879,9 +879,9 @@ function calculate(team){
         }
     }
 
-    differenceTotal();
+    updateOutliers(unmatchedTeams, team);
 
-    console.log(unmatchedTeams);
+    differenceTotal();
 
 }
 
@@ -986,7 +986,6 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
             }
 
         }
-
     }
 
     if(!hasMatch) {
@@ -994,8 +993,11 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
         //updating array with outliers
         unmatchedTeams.push(season);
 
+        // console.log(formattedTeam);
+
     }
 
+    //TODO: remove this?
     //populate table for the teams with season 2 data only
     if(unmatchedTeams.length > 6) {
 
@@ -1011,6 +1013,92 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
         seasonTwo.innerHTML = season.result;
         difference.innerHTML = 'N/A';
 
+    }
+
+}
+
+//find the teams not in 2nd season and combine with outliers
+function updateOutliers(unmatchedTeams, team){
+
+    let seasonOneOnly = [];
+    let seasonTwoOnly = unmatchedTeams;
+
+    //loop over table to find teams with 1st season data only
+    for (var i = 2, row; row = table.rows[i]; i++) {
+        if(row.cells[3].innerText == ""){
+            seasonOneOnly.push(row.cells[0].innerText);
+        }
+        
+    }
+
+    //format season two match names
+    let sTwoUnmatchedNames = [];
+    for(let i = 0; i < seasonTwoOnly.length; i++) {
+        sTwoUnmatchedNames.push(formatTeam(team, seasonTwoOnly[i].match));
+    }
+
+    combinedNames = [];
+    capturedName = [];
+    for(let i = 0; i < seasonOneOnly.length; i++) {
+
+        if(!capturedName.includes(seasonOneOnly[i].slice(0, -4))) {
+            capturedName.push(seasonOneOnly[i].slice(0, -4));
+
+            for(let i = 0; i < sTwoUnmatchedNames.length; i++){
+                if(!capturedName.includes(sTwoUnmatchedNames[i].slice(0, -4))) {
+                    capturedName.push(sTwoUnmatchedNames[i].slice(0, -4));
+                    combinedNames.push(seasonOneOnly[i].slice(0, -4) + '/' + sTwoUnmatchedNames[i].slice(0, -4));
+                }
+            }
+        }
+    }
+
+    console.log(capturedName);
+
+    console.log(combinedNames);
+    console.log(seasonOneOnly);
+    // console.log(seasonTwoOnly);
+    console.log(sTwoUnmatchedNames);
+
+    // console.log(combinedNames[0].slice(0, "/").slice(0, -4));
+
+    //update table
+    for (var i = 2, row; row = table.rows[i]; i++) {
+
+        for(let i = 0; i < combinedNames.length; i++) {
+
+            let splitNames = combinedNames[i].split("/");
+            let isHome;
+
+            if(row.cells[0].innerText.slice(0, -4) == splitNames[0]){
+
+                if(row.cells[0].innerText.slice(-3) == "(H)"){
+                    isHome = true;
+                    row.cells[0].innerText = combinedNames[i] + " (H)";
+
+                    for(let i = 0; i < seasonTwoOnly.length; i++) {
+
+                        if(seasonTwoOnly[i].match.split("_")[0] == splitNames[1]){
+                            row.cells[2].innerText = seasonTwoOnly[i].result
+                        }
+                        
+                    }
+                } else {
+                    isHome = false;
+                    row.cells[0].innerText = combinedNames[i] + " (A)";
+
+                    for(let i = 0; i < seasonTwoOnly.length; i++) {
+
+                        if(seasonTwoOnly[i].match.split("_")[1] == splitNames[1]){
+                            row.cells[2].innerText = seasonTwoOnly[i].result
+                        }
+                        
+                    }
+                } 
+
+            }
+        }
+        
     }
 
 }
