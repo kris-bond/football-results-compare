@@ -135,8 +135,6 @@ function calculate(team){
 
     updateOutliers(unmatchedTeams, team);
 
-    console.log(unmatchedTeams);
-
     differenceTotal();
 
 }

@@ -2,4 +2,4 @@
 
 A side-by-side view of a selected Premier Leagues team's results between the 2021/22 and 2022/23 season.
 
-Data is optained via a custom made api
+Data is optained via a custom made api avaiable at https://github.com/kris-bond/football-results-scraper
