@@ -12,14 +12,14 @@ async function getData() {
 
     // Parsing it to JSON format
     const data2122 = await response2122.json();
-    results21to22 = data2122.results;
+    results21to22 = await data2122.results;
 
     // and getting the response back
     const response2223 = await fetch(api_url2223);
 
     // Parsing it to JSON format
     const data2223 = await response2223.json();
-    results22to23 = data2223.results;
+    results22to23 = await data2223.results;
 }
 
 // Calling the function
