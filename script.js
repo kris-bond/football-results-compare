@@ -20,6 +20,8 @@ async function getData() {
     // Parsing it to JSON format
     const data2223 = await response2223.json();
     results22to23 = await data2223.results;
+
+    console.log(results21to22)
 }
 
 // Calling the function
@@ -28,25 +30,20 @@ getData();
 const teams = 
 [
     {"name":"Arsenal"},
-    // {"name":"Bournemouth"},
     {"name":"Aston Villa"},
     {"name":"Brentford"},
     {"name":"Brighton & Hove Albion"},
-    // {"name":"Burnley"},
     {"name":"Chelsea"},
     {"name":"Crystal Palace"},
     {"name":"Everton"},
-    // {"name":"Fulham"},
     {"name":"Leeds United"},
     {"name":"Leicester City"},
     {"name":"Liverpool"},
     {"name":"Manchester City"},
     {"name":"Manchester United"},
     {"name":"Newcastle United"},
-    // {"name":"Nottingham Forest"},
     {"name":"Southampton"},
     {"name":"Tottenham Hotspur"},
-    // {"name":"Watford"},
     {"name":"West Ham United"},
     {"name":"Wolverhampton Wanderers"}
     
@@ -137,6 +134,8 @@ function calculate(team){
     }
 
     updateOutliers(unmatchedTeams, team);
+
+    console.log(unmatchedTeams);
 
     differenceTotal();
 
@@ -251,23 +250,6 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
         unmatchedTeams.push(season);
 
         // console.log(formattedTeam);
-
-    }
-
-    //populate table for the teams with season 2 data only
-    if(unmatchedTeams.length > 6) {
-
-        let row = tableBody.insertRow();
-
-        let teamPlayed = row.insertCell(0);
-        let seasonOne = row.insertCell(1);
-        let seasonTwo = row.insertCell(2);
-        let difference = row.insertCell(3);
-
-        teamPlayed.innerHTML = formattedTeam;
-        seasonOne.innerHTML = 'N/A';
-        seasonTwo.innerHTML = season.result;
-        difference.innerHTML = 'N/A';
 
     }
 
