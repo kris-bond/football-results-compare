@@ -6,22 +6,27 @@ let results22to23 = null;
 
 async function getData() {
 
-    // Making an API call (request)
-    // and getting the response back
-    const response2122 = await fetch(api_url2122);
+    try{
+        // Making an API call (request)
+        // and getting the response back
+        const response2122 = await fetch(api_url2122);
 
-    // Parsing it to JSON format
-    const data2122 = await response2122.json();
-    results21to22 = await data2122.results;
+        // Parsing it to JSON format
+        const data2122 = await response2122.json();
+        results21to22 = await data2122.results;
 
-    // and getting the response back
-    const response2223 = await fetch(api_url2223);
+        // and getting the response back
+        const response2223 = await fetch(api_url2223);
 
-    // Parsing it to JSON format
-    const data2223 = await response2223.json();
-    results22to23 = await data2223.results;
+        // Parsing it to JSON format
+        const data2223 = await response2223.json();
+        results22to23 = await data2223.results;
+    }
+    catch(error){
+        console.log(error);
+        alert("Server is unavaialbe - this is what happens when you don't pay for server space.\n\nServer is booting up - please wait a few minutes before trying again.");
+    }
 
-    console.log(results21to22)
 }
 
 // Calling the function
@@ -246,8 +251,6 @@ function matchTeams(formattedTeam, season, unmatchedTeams){
 
         //updating array with outliers
         unmatchedTeams.push(season);
-
-        // console.log(formattedTeam);
 
     }
 
