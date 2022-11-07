@@ -24,7 +24,7 @@ async function getData() {
     }
     catch(error){
         console.log(error);
-        alert("Server is unavaialbe - this is what happens when you don't pay for server space.\n\nServer is booting up - please wait a few minutes before trying again.");
+        alert("Server is unavailable.\n\nServer is booting up - please wait a few minutes before trying again.");
     }
 
 }
@@ -94,6 +94,11 @@ function calculate(team){
 
     //keeps track of teams with no matches
     let unmatchedTeams = [];
+
+    //if no data exists, create an alert
+    if(results21to22.length === null){
+        alert("Server is unavailable.\n\nServer is booting up - please wait a few minutes before trying again.");
+    }
 
     //looping over season one data
     for(let i = 0; i < results21to22.length; i++) {
@@ -285,7 +290,7 @@ function updateOutliers(unmatchedTeams, team){
     for(let i = 0; i < seasonOneOnly.length; i++) {
 
         if(!sOneUniq.includes(seasonOneOnly[i].slice(0, -4))) {
-            // capturedName.push(seasonOneOnly[i].slice(0, -4));
+            
             sOneUniq.push(seasonOneOnly[i].slice(0, -4));
 
         }
@@ -294,9 +299,9 @@ function updateOutliers(unmatchedTeams, team){
 
     for(let i = 0; i < sTwoUnmatchedNames.length; i++){
         if(!sTwoUniq.includes(sTwoUnmatchedNames[i].slice(0, -4))) {
-            // capturedName.push(sTwoUnmatchedNames[i].slice(0, -4));
+
             sTwoUniq.push(sTwoUnmatchedNames[i].slice(0, -4));
-            // combinedNames.push(seasonOneOnly[i].slice(0, -4) + '/' + sTwoUnmatchedNames[i].slice(0, -4));
+
         }
     }
 
@@ -450,7 +455,6 @@ function differenceTotal(){
 
 //TODO:
 //colour the cells in the seasons columns
-//api ajustments to be made - auto updates
 //add the team names to be called from api
 //Make code generic code to be reused/ clean up code
 //make use of map function
